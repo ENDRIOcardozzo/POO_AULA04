@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Produto</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 400px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px gray;
+        }
+
+        h1 {
+            text-align: center;
+            color: #263b5a;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .adicionar {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #2864e8;
+            color: white;
+            cursor: pointer;
+        }
+
+        .limpar {
+            background-color: #e52b2b;
+            color: white;
+            border: none;
+            padding: 8px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th {
+            background-color: #2864e8;
+            color: white;
+            padding: 8px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 7px;
+            text-align: center;
+        }
+
+        .excluir {
+            background-color: #e52b2b;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Cadastro de Produto</h1>
+
+        <label>Nome do Produto:</label>
+        <input type="text" id="nome" placeholder="Ex: Notebook">
+
+        <label>Preço (R$):</label>
+        <input type="number" id="preco" placeholder="Ex: 3500.00">
+
+        <label>Quantidade:</label>
+        <input type="number" id="quantidade" placeholder="Ex: 5">
+
+        <button class="adicionar" onclick="adicionarProduto()">
+            Adicionar Produto
+        </button>
+
+        <hr>
+
+        <div class="total">
+
+            Total em Estoque: R$ 
+            <span id="total">0.00</span>
+
+            <button class="limpar" onclick="limparTudo()">
+                Limpar Tudo
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço Un.</th>
+                    <th>Qtd.</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="tabelaProdutos">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <script>
+
+        class Produto {
+
+            constructor(nome, preco, quantidade) {
+
+                this.nome = nome;
+                this.preco = preco;
+                this.quantidade = quantidade;
+
+            }
+
+            calcularSubtotal() {
+
+                return this.preco * this.quantidade;
+
+            }
+
+        }
+
+
+        let produtos = [];
+
+
+        function adicionarProduto() {
+
+            let nome = document.getElementById("nome").value;
+
+            let preco = document.getElementById("preco").value;
+
+            let quantidade = document.getElementById("quantidade").value;
+
+
+            let produto = new Produto(
+                nome,
+                Number(preco),
+                Number(quantidade)
+            );
+
+
+            produtos.push(produto);
+
+
+            mostrarProdutos();
+
+
+            document.getElementById("nome").value = "";
+
+            document.getElementById("preco").value = "";
+
+            document.getElementById("quantidade").value = "";
+
+        }
+
+
+        function mostrarProdutos() {
+
+            let tabela = document.getElementById("tabelaProdutos");
+
+            tabela.innerHTML = "";
+
+
+            let total = 0;
+
+
+            for (let i = 0; i < produtos.length; i++) {
+
+                let produto = produtos[i];
+
+                let subtotal = produto.calcularSubtotal();
+
+
+                total = total + subtotal;
+
+
+                tabela.innerHTML += `
+
+                    <tr>
+
+                        <td>${produto.nome}</td>
+
+                        <td>R$ ${produto.preco.toFixed(2)}</td>
+
+                        <td>${produto.quantidade}</td>
+
+                        <td>R$ ${subtotal.toFixed(2)}</td>
+
+                        <td>
+
+                            <button
+                                class="excluir"
+                                onclick="excluirProduto(${i})">
+
+                                X
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+
+            document.getElementById("total").innerText =
+                total.toFixed(2);
+
+        }
+
+
+        function excluirProduto(indice) {
+
+            produtos.splice(indice, 1);
+
+            mostrarProdutos();
+
+        }
+
+
+        function limparTudo() {
+
+            produtos = [];
+
+            mostrarProdutos();
+
+        }
+
+    </script>
+
+</body>
+
+</html>
