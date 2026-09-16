@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Produto</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f3f5;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
+        }
+
+        h1 {
+            text-align: center;
+            color: #24364b;
+            font-size: 25px;
+            margin: 5px 0 20px;
+        }
+
+        .campo {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            height: 31px;
+            padding: 6px 9px;
+            border: 1px solid #d6d6d6;
+            border-radius: 3px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2864e8;
+        }
+
+        input::placeholder {
+            color: #999;
+        }
+
+        .btn-adicionar {
+            width: 100%;
+            height: 32px;
+            margin-top: 2px;
+            background-color: #2864e8;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-adicionar:hover {
+            background-color: #174fc7;
+        }
+
+        .linha-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .total {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .btn-limpar {
+            background-color: #e52b2b;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 7px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-limpar:hover {
+            background-color: #c91f1f;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 9px;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        th {
+            background-color: #2864e8;
+            color: white;
+            padding: 7px 5px;
+            text-align: center;
+            border-right: 1px solid #8eb0f5;
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 7px 5px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            color: #444;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        .btn-remover {
+            background-color: #e52b2b;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 4px 7px;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .btn-remover:hover {
+            background-color: #c91f1f;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #999;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>Cadastro de Produto</h1>
+
+        
+        <div class="campo">
+            <label for="nome">Nome do Produto:</label>
+
+            <input
+                type="text"
+                id="nome"
+                placeholder="Ex: Notebook"
+            >
+        </div>
+
+
+        <div class="campo">
+            <label for="preco">Preço (R$):</label>
+
+            <input
+                type="number"
+                id="preco"
+                placeholder="Ex: 3500.00"
+                step="0.01"
+            >
+        </div>
+
+
+       
+        <div class="campo">
+            <label for="quantidade">Quantidade:</label>
+
+            <input
+                type="number"
+                id="quantidade"
+                placeholder="Ex: 5"
+            >
+        </div>
+
+
+    
+        <button
+            class="btn-adicionar"
+            onclick="cadastrarProduto()"
+        >
+            Adicionar Produto
+        </button>
+
+
+        <!-- Total e limpar -->
+        <div class="linha-total">
+
+            <div class="total">
+                Total em Estoque: R$ <span id="total">0,00</span>
+            </div>
+
+            <button
+                class="btn-limpar"
+                onclick="limparProdutos()"
+            >
+                Limpar Tudo
+            </button>
+
+        </div>
+
+
+        <!-- Tabela -->
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço Un.</th>
+                    <th>Qtd.</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelaProdutos">
+
+                <tr>
+                    <td colspan="5" class="vazio">
+                        Nenhum produto cadastrado.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <script>
+
+        
+
+        class Produto {
+
+            // Atributos privados
+            #preco;
+            #quantidade;
+
+
+
+            constructor(nome, preco, quantidade) {
+
+                // Validação do nome
+                if (nome.trim() === "") {
+                    throw new Error(
+                        "O nome do produto não pode estar em branco!"
+                    );
+                }
+
+
+                if (preco <= 0) {
+                    throw new Error(
+                        "O preço deve ser maior que zero!"
+                    );
+                }
+
+
+                if (quantidade <= 0) {
+                    throw new Error(
+                        "A quantidade deve ser maior que zero!"
+                    );
+                }
+
+
+              
+                this.nome = nome;
+
+
+                // Atributos privados
+                this.#preco = preco;
+                this.#quantidade = quantidade;
+            }
+
+
+
+            get preco() {
+                return this.#preco;
+            }
+
+
+       
+            set preco(novoPreco) {
+
+                if (novoPreco <= 0) {
+                    throw new Error(
+                        "O preço deve ser maior que zero!"
+                    );
+                }
+
+                this.#preco = novoPreco;
+            }
+
+
+            
+
+            get quantidade() {
+                return this.#quantidade;
+            }
+
+
+            
+
+            set quantidade(novaQuantidade) {
+
+                if (novaQuantidade <= 0) {
+                    throw new Error(
+                        "A quantidade deve ser maior que zero!"
+                    );
+                }
+
+                this.#quantidade = novaQuantidade;
+            }
+
+
+           
+            get subtotal() {
+
+                return this.#preco * this.#quantidade;
+
+            }
+
+        }
+
+        
+       
+
+        let produtos = [];
+
+
+
+        function cadastrarProduto() {
+
+            try {
+
+                // Pegar valores dos campos
+                const nome =
+                    document.getElementById("nome").value;
+
+                const preco =
+                    Number(document.getElementById("preco").value);
+
+                const quantidade =
+                    Number(document.getElementById("quantidade").value);
+
+
+                // Criar objeto Produto
+                const produto = new Produto(
+                    nome,
+                    preco,
+                    quantidade
+                );
+
+
+             
+                produtos.push(produto);
+
+
+                atualizarTabela();
+
+
+                // Limpar campos
+                document.getElementById("nome").value = "";
+                document.getElementById("preco").value = "";
+                document.getElementById("quantidade").value = "";
+
+
+                // Voltar para o primeiro campo
+                document.getElementById("nome").focus();
+
+            }
+
+
+            catch (erro) {
+
+               
+                alert(erro.message);
+
+            }
+
+        }
+
+
+
+        function atualizarTabela() {
+
+            const tabela =
+                document.getElementById("tabelaProdutos");
+
+
+            tabela.innerHTML = "";
+
+
+            
+            if (produtos.length === 0) {
+
+                tabela.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="vazio">
+                            Nenhum produto cadastrado.
+                        </td>
+                    </tr>
+                `;
+
+                atualizarTotal();
+
+                return;
+            }
+
+
+           
+            produtos.forEach((produto, indice) => {
+
+                const linha =
+                    document.createElement("tr");
+
+
+                linha.innerHTML = `
+
+                    <td>
+                        ${produto.nome}
+                    </td>
+
+                    <td>
+                        R$ ${produto.preco.toFixed(2)}
+                    </td>
+
+                    <td>
+                        ${produto.quantidade}
+                    </td>
+
+                    <td>
+                        R$ ${produto.subtotal.toFixed(2)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn-remover"
+                            onclick="removerProduto(${indice})"
+                        >
+                            Remover
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                tabela.appendChild(linha);
+
+            });
+
+
+            
+            atualizarTotal();
+
+        }
+
+
+
+        function atualizarTotal() {
+
+            let total = 0;
+
+
+            produtos.forEach(produto => {
+
+                total += produto.subtotal;
+
+            });
+
+
+            document.getElementById("total").textContent =
+                total.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+        }
+
+
+      
+        function removerProduto(indice) {
+
+            produtos.splice(indice, 1);
+
+            atualizarTabela();
+
+        }
+
+
+       
+        function limparProdutos() {
+
+            if (produtos.length === 0) {
+                return;
+            }
+
+
+            const confirmar =
+                confirm("Deseja realmente limpar todos os produtos?");
+
+
+            if (confirmar) {
+
+                produtos = [];
+
+                atualizarTabela();
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
