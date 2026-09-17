@@ -1,0 +1,158 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    margin: 0 0 15px;
+    text-align: center;
+    font-size: 22px;
+    color: #222;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #222;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: none;
+    font-size: 13px;
+}
+
+input:focus {
+    border-color: #2864e8;
+    box-shadow: 0 0 0 2px rgba(40, 100, 232, 0.15);
+}
+
+.adicionar {
+    width: 100%;
+    padding: 8px;
+    margin-top: 9px;
+    border: none;
+    border-radius: 3px;
+    background-color: #2864e8;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.adicionar:hover {
+    background-color: #174fc7;
+}
+
+.linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.linha h3 {
+    margin: 0;
+    font-size: 12px;
+    color: #222;
+}
+
+.limpar {
+    width: auto;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 3px;
+    background-color: #e62b32;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.limpar:hover {
+    background-color: #c91f26;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+th {
+    padding: 7px;
+    background-color: #2864e8;
+    color: #fff;
+    text-align: center;
+}
+
+td {
+    padding: 7px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.remover {
+    padding: 5px 8px;
+    border: none;
+    border-radius: 3px;
+    background-color: #e62b32;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.remover:hover {
+    background-color: #c91f26;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .linha {
+        align-items: flex-start;
+    }
+
+    table {
+        font-size: 10px;
+    }
+
+    th,
+    td {
+        padding: 6px 4px;
+    }
+}
