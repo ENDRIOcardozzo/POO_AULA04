@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -11,7 +12,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 500px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -51,13 +52,13 @@ input:focus {
 
 .adicionar {
     width: 100%;
-    padding: 8px;
-    margin-top: 9px;
+    padding: 10px;
+    margin-top: 12px;
     border: none;
     border-radius: 3px;
     background-color: #2864e8;
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -78,13 +79,17 @@ input:focus {
 
 .linha h3 {
     margin: 0;
-    font-size: 12px;
+    font-size: 14px;
     color: #222;
+}
+
+#total-estoque {
+    color: #2864e8;
 }
 
 .limpar {
     width: auto;
-    padding: 7px 12px;
+    padding: 8px 12px;
     border: none;
     border-radius: 3px;
     background-color: #e62b32;
@@ -94,50 +99,62 @@ input:focus {
     cursor: pointer;
 }
 
-.limpar:hover {
+.limpar:hover,
+.remover:hover {
     background-color: #c91f26;
+}
+
+.tabela-container {
+    width: 100%;
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
     border-collapse: collapse;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 th {
-    padding: 7px;
+    padding: 10px 7px;
     background-color: #2864e8;
     color: #fff;
     text-align: center;
 }
 
 td {
-    padding: 7px;
+    padding: 8px 6px;
     border-bottom: 1px solid #ddd;
     text-align: center;
+    overflow-wrap: anywhere;
 }
 
+.editar,
 .remover {
-    padding: 5px 8px;
+    padding: 6px 9px;
+    margin: 2px;
     border: none;
     border-radius: 3px;
-    background-color: #e62b32;
     color: #fff;
     font-size: 10px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.remover:hover {
-    background-color: #c91f26;
+.editar {
+    background-color: #f0a020;
 }
 
+.editar:hover {
+    background-color: #d4870c;
+}
 
-/* Responsividade */
+.remover {
+    background-color: #e62b32;
+}
 
 @media (max-width: 600px) {
-
     body {
         padding: 10px;
     }
@@ -148,15 +165,20 @@ td {
 
     .linha {
         align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .linha h3 {
+        font-size: 12px;
     }
 
     table {
-        font-size: 10px;
+        min-width: 600px;
+        font-size: 11px;
     }
 
     th,
     td {
         padding: 6px 4px;
     }
-
 }
