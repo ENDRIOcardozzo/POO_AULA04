@@ -91,8 +91,11 @@ formProduto.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const nome = nomeInput.value.trim();
-    const preco = Number(precoInput.value);
-    const quantidade = Number(quantidadeInput.value);
+    const precoTexto = precoInput.value.trim();
+    const quantidadeTexto = quantidadeInput.value.trim();
+
+    const preco = Number(precoTexto);
+    const quantidade = Number(quantidadeTexto);
 
     if (!nome) {
         alert("Por favor, informe um nome válido para o produto.");
@@ -101,14 +104,24 @@ formProduto.addEventListener("submit", function (event) {
     }
 
     if (
-        precoInput.value.trim() === "" ||
+        precoTexto === "" ||
+        isNaN(precoInput.valueAsNumber) ||
         !Number.isFinite(preco) ||
-        preco <= 0 ||
-        quantidadeInput.value.trim() === "" ||
+        preco <= 0
+    ) {
+        alert("Digite um preço numérico válido maior que zero.");
+        precoInput.focus();
+        return;
+    }
+
+    if (
+        quantidadeTexto === "" ||
+        isNaN(quantidadeInput.valueAsNumber) ||
         !Number.isInteger(quantidade) ||
         quantidade <= 0
     ) {
-        alert("O preço e a quantidade devem ser valores numéricos maiores que zero. A quantidade deve ser um número inteiro.");
+        alert("Digite uma quantidade inteira maior que zero.");
+        quantidadeInput.focus();
         return;
     }
 
@@ -259,3 +272,4 @@ function atualizarInterface() {
 
 carregarDoLocalStorage();
 atualizarInterface();
+    
